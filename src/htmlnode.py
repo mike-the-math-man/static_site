@@ -1,3 +1,5 @@
+from textnode import TextNode, TextType
+
 class HTMLNode:
     def __init__(self,tag = None,value = None,children = None,props = None):
         self.tag = tag
@@ -62,3 +64,26 @@ An HTMLNode without props simply won't have any attributes
 #children - A list of HTMLNode children of this node
 #props - dictionary of key-value pairs: attributes of HTML tag. 
 #       eg link (<a> tag) might have {"href": "https://www.google.com"}
+
+
+def text_node_to_html_node(text_node):
+    if not text_node.TextType or text_node.TextType == None:
+        raise Exception("Not a text type")
+    if text_node.TextType == text_node.TextType.TEXT:
+        return LeafNode(None,text_node.text)
+    elif text_node.TextType == text_node.TextType.BOLD:
+        return LeafNode('b',text_node.text)
+    elif text_node.TextType == text_node.TextType.ITALIC:
+        return LeafNode('i',text_node.text)
+    elif text_node.TextType == text_node.TextType.CODE:
+        return LeafNode('code',text_node.text,)
+    elif text_node.TextType == text_node.TextType.LINK:
+        return LeafNode('a',text_node.text,{'href': text_node.url})
+    elif text_node.TextType == text_node.TextType.IMAGE:
+        return LeafNode('img',"",{'src': text_node.url, 'alt': text_node.text,})
+    else:
+        raise ValueError(f"invalid text type: {text_node.TextType}")
+
+
+
+
