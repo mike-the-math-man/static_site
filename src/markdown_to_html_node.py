@@ -125,4 +125,11 @@ def markdown_to_html_node(markdown):
     main_html_node = ParentNode('div',all_children)
     return main_html_node
 
-
+def extract_title(markdown):
+    blocks = markdown_to_blocks(markdown)
+    for block in blocks:
+        block_type = block_to_block_type(block)
+        if block_type == BlockType.HEADING:
+            if block.startswith('# '): 
+                john = normalize(block[2:])
+    return john

@@ -45,11 +45,13 @@ class ParentNode(HTMLNode):
         if self.children == None:
             raise ValueError("Parent nodes need a child")
         else:
-            html = f'<{self.tag}{self.props_to_html()}>'
+            #html = f'<{self.tag}{self.props_to_html()}>'
+            children_html = ''
             for child in self.children:
-                html += child.to_html()
-            html += f'</{self.tag}>'
-            return html
+                children_html += child.to_html()
+            return f"<{self.tag}{self.props_to_html()}>{children_html}</{self.tag}>"
+            #html += f'</{self.tag}>'
+            #return html
     
     def __repr__(self):
         return f"parent({self.tag}, {self.children}, {self.props})"
@@ -81,7 +83,7 @@ def text_node_to_html_node(text_node):
     elif text_node.TextType == text_node.TextType.LINK:
         return LeafNode('a',text_node.text,{'href': text_node.url})
     elif text_node.TextType == text_node.TextType.IMAGE:
-        return LeafNode('img',"",{'src': text_node.url, 'alt': text_node.text,})
+        return LeafNode('img'," ",{'src': text_node.url, 'alt': text_node.text,})
     else:
         raise ValueError(f"invalid text type: {text_node.TextType}")
 
