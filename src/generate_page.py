@@ -3,8 +3,7 @@ import os
 import shutil
 
 
-
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path,basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     with open(from_path, "r",encoding="utf-8") as file_object:
         markdown = file_object.read()
@@ -16,13 +15,15 @@ def generate_page(from_path, template_path, dest_path):
     title = extract_title(markdown)
     template = template.replace('{{ Title }}',title)
     template  = template.replace('{{ Content }}',content)
+    template  = template.replace('href="/',f'href="{basepath}')
+    template  = template.replace('src="/',f'src="{basepath}')
     dirpath = os.path.dirname(dest_path)
     if dirpath:
         os.makedirs(dirpath, exist_ok=True)
     with open(dest_path, "w", encoding="utf-8") as f:
         f.write(template)
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     if not os.path.exists(dest_dir_path):
         os.mkdir(dest_dir_path)
 
@@ -43,11 +44,13 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             title = extract_title(markdown)
             template = template.replace('{{ Title }}',title)
             template  = template.replace('{{ Content }}',content)
+            template  = template.replace('href="/',f'href="{basepath}')
+            template  = template.replace('src="/',f'src="{basepath}')
             dirpath = os.path.dirname(dest_path)
             if dirpath:
                 os.makedirs(dirpath, exist_ok=True)
             with open(dest_path, "w", encoding="utf-8") as f:
                 f.write(template)
         else:
-            generate_pages_recursive(from_path, template_path, dest_path)
+            generate_pages_recursive(from_path, template_path, dest_path,basepath)
 
