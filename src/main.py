@@ -5,8 +5,9 @@ from generate_page import generate_page, generate_pages_recursive
 import sys
 
 basepath = '/'
-if sys.argv[0]:
-    basepath = sys.argv[0]
+
+if len(sys.argv)>1:
+    basepath = sys.argv[1]
 
 def delete_and_copy(destination_path,start_path):
     destination_path = os.path.expanduser(destination_path)
@@ -32,10 +33,11 @@ def delete_and_copy(destination_path,start_path):
 
           
 def main():
-    shutil.rmtree( os.path.expanduser("~/static_site/docs"), ignore_errors=False, onexc=None, dir_fd=None)
-    delete_and_copy("~/static_site/docs", "~/static_site/static")
+    if os.path.exists(os.path.expanduser("~/static_site/public")):
+        shutil.rmtree( os.path.expanduser("~/static_site/public"), ignore_errors=False, onexc=None, dir_fd=None)
+    delete_and_copy("~/static_site/public", "~/static_site/static")
     #generate_page("content/index.md", "template.html", "public/index.html")
-    generate_pages_recursive("content", "template.html", "docs",basepath)
+    generate_pages_recursive("content", "template.html", "public",basepath)
 
 
 main()
