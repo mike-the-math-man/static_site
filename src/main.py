@@ -1,7 +1,7 @@
 from textnode import TextNode, TextType
 import os
 import shutil
-from generate_page import generate_page
+from generate_page import generate_page, generate_pages_recursive
 
 
 
@@ -31,7 +31,8 @@ def delete_and_copy(destination_path,start_path):
 def main():
     shutil.rmtree( os.path.expanduser("~/static_site/public"), ignore_errors=False, onexc=None, dir_fd=None)
     delete_and_copy("~/static_site/public", "~/static_site/static")
-    generate_page("content/index.md", "template.html", "public/index.html")
+    #generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive("content", "template.html", "public")
 
 
 main()
